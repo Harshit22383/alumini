@@ -1,5 +1,5 @@
 /* ==========================================================================
-   INITIAL MOCK STATE
+   INITIAL MOCK DATA
    ========================================================================== */
 
 const defaultPosts = [
@@ -23,7 +23,7 @@ const defaultPosts = [
     batch: "2023",
     category: "opportunity",
     time: "4 hours ago",
-    content: "My startup team is hiring 2 Frontend Interns (React/Tailwind). School alumni get direct fast-track interviews!",
+    content: "My team at StartupLabs is hiring 2 Frontend Interns (React / Tailwind). Direct fast-track interview for school passouts!",
     imageUrl: "",
     likes: 24,
     hasLiked: false,
@@ -115,7 +115,7 @@ const yearbookPhotos = [
     batch: "2023",
     tag: "Milestone",
     imageUrl: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&auto=format&fit=crop&q=60",
-    caption: "Working on the IoT Smart City model late in the physics lab."
+    caption: "Working on the IoT Smart City model in the physics lab."
   }
 ];
 
@@ -136,14 +136,14 @@ let chatMessagesData = {
 };
 
 /* ==========================================================================
-   STATE INITIALIZATION
+   INITIAL LOCALSTORAGE SYNC
    ========================================================================== */
 
-if (!localStorage.getItem("alumni_posts_v3")) {
-  localStorage.setItem("alumni_posts_v3", JSON.stringify(defaultPosts));
+if (!localStorage.getItem("alumni_posts_v4")) {
+  localStorage.setItem("alumni_posts_v4", JSON.stringify(defaultPosts));
 }
-if (!localStorage.getItem("alumni_events_v3")) {
-  localStorage.setItem("alumni_events_v3", JSON.stringify(eventsData));
+if (!localStorage.getItem("alumni_events_v4")) {
+  localStorage.setItem("alumni_events_v4", JSON.stringify(eventsData));
 }
 
 let activeFilter = "all";
@@ -152,47 +152,62 @@ let activeChatBatch = "2024";
 let mapInstance = null;
 
 /* ==========================================================================
-   TAB ROUTER
+   MULTI-PAGE ROUTER (HASH-BASED)
    ========================================================================== */
 
-function switchTab(tabId) {
-  const tabs = ['feed', 'directory', 'events', 'yearbook', 'chat'];
-  tabs.forEach(tab => {
-    const view = document.getElementById(`view-${tab}`);
-    const btn = document.getElementById(`tab-${tab}`);
-    if (tab === tabId) {
-      view.classList.remove('hidden');
-      btn.className = "tab-btn active-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition";
+const validPages = ['home', 'feed', 'directory', 'events', 'yearbook', 'chat', 'about'];
+
+function navigateToPage() {
+  const hash = window.location.hash.replace('#', '') || 'home';
+  const targetPage = validPages.includes(hash) ? hash : 'home';
+
+  validPages.forEach(page => {
+    const pageEl = document.getElementById(`page-${page}`);
+    const navEl = document.getElementById(`nav-${page}`);
+
+    if (page === targetPage) {
+      if (pageEl) {
+        pageEl.classList.remove('hidden');
+        if (page === 'feed') pageEl.classList.add('grid');
+      }
+      if (navEl) {
+        navEl.className = "nav-link active-nav px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition";
+      }
     } else {
-      view.classList.add('hidden');
-      btn.className = "tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700";
+      if (pageEl) {
+        pageEl.classList.add('hidden');
+        if (page === 'feed') pageEl.classList.remove('grid');
+      }
+      if (navEl) {
+        navEl.className = "nav-link px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700";
+      }
     }
   });
 
-  if (tabId === 'directory') {
+  // Page-specific trigger hooks
+  if (targetPage === 'feed') renderFeed();
+  if (targetPage === 'directory') {
     renderDirectory();
-    setTimeout(initMap, 200);
-  } else if (tabId === 'events') {
-    renderEvents();
-  } else if (tabId === 'yearbook') {
-    renderYearbook();
-  } else if (tabId === 'chat') {
-    renderChat();
-  } else {
-    renderFeed();
+    setTimeout(initMap, 250);
   }
+  if (targetPage === 'events') renderEvents();
+  if (targetPage === 'yearbook') renderYearbook();
+  if (targetPage === 'chat') renderChat();
 }
+
+window.addEventListener('hashchange', navigateToPage);
+window.addEventListener('DOMContentLoaded', navigateToPage);
 
 /* ==========================================================================
    FEED LOGIC
    ========================================================================== */
 
 function getPosts() {
-  return JSON.parse(localStorage.getItem("alumni_posts_v3")) || [];
+  return JSON.parse(localStorage.getItem("alumni_posts_v4")) || [];
 }
 
 function savePosts(posts) {
-  localStorage.setItem("alumni_posts_v3", JSON.stringify(posts));
+  localStorage.setItem("alumni_posts_v4", JSON.stringify(posts));
   renderFeed();
 }
 
@@ -211,6 +226,7 @@ function filterPosts(type) {
 
 function renderFeed() {
   const container = document.getElementById("postsFeed");
+  if (!container) return;
   const posts = getPosts();
   container.innerHTML = "";
 
@@ -332,20 +348,23 @@ function addComment(id) {
 }
 
 /* ==========================================================================
-   ALUMNI DIRECTORY & GEOMAP
-   ========================================================================= */
+   DIRECTORY & GEOMAP
+   ========================================================================== */
 
 function toggleMentorOnlyFilter() {
   mentorOnlyFilter = !mentorOnlyFilter;
   const btn = document.getElementById("mentor-filter-btn");
-  btn.className = mentorOnlyFilter 
-    ? "px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-medium transition"
-    : "px-3 py-1.5 rounded-lg border border-emerald-500 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-gray-700 font-medium transition";
+  if (btn) {
+    btn.className = mentorOnlyFilter 
+      ? "px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-medium transition"
+      : "px-3 py-1.5 rounded-lg border border-emerald-500 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-gray-700 font-medium transition";
+  }
   renderDirectory();
 }
 
 function renderDirectory() {
   const grid = document.getElementById("directoryGrid");
+  if (!grid) return;
   const query = (document.getElementById("dirSearchInput")?.value || "").toLowerCase();
   grid.innerHTML = "";
 
@@ -389,7 +408,9 @@ function renderDirectory() {
 }
 
 function initMap() {
-  if (mapInstance) return;
+  const mapDiv = document.getElementById('alumniMap');
+  if (!mapDiv || mapInstance) return;
+
   mapInstance = L.map('alumniMap').setView([20.5937, 78.9629], 3);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap'
@@ -402,12 +423,13 @@ function initMap() {
 }
 
 /* ==========================================================================
-   EVENTS & RSVP LOGIC
+   EVENTS LOGIC
    ========================================================================== */
 
 function renderEvents() {
   const grid = document.getElementById("eventsGrid");
-  const events = JSON.parse(localStorage.getItem("alumni_events_v3")) || eventsData;
+  if (!grid) return;
+  const events = JSON.parse(localStorage.getItem("alumni_events_v4")) || eventsData;
   grid.innerHTML = "";
 
   events.forEach(evt => {
@@ -437,7 +459,7 @@ function renderEvents() {
 }
 
 function handleRSVP(id, status) {
-  const events = JSON.parse(localStorage.getItem("alumni_events_v3")) || eventsData;
+  const events = JSON.parse(localStorage.getItem("alumni_events_v4")) || eventsData;
   const evt = events.find(e => e.id === id);
   if (evt) {
     if (evt.userRsvp === status) {
@@ -448,17 +470,18 @@ function handleRSVP(id, status) {
       evt.userRsvp = status;
       if (status === 'going') evt.going++;
     }
-    localStorage.setItem("alumni_events_v3", JSON.stringify(events));
+    localStorage.setItem("alumni_events_v4", JSON.stringify(events));
     renderEvents();
   }
 }
 
 /* ==========================================================================
-   MEMORY WALL & YEARBOOK
+   YEARBOOK LOGIC
    ========================================================================== */
 
 function renderYearbook() {
   const grid = document.getElementById("yearbookGrid");
+  if (!grid) return;
   grid.innerHTML = "";
 
   yearbookPhotos.forEach(p => {
@@ -482,17 +505,17 @@ function renderYearbook() {
 }
 
 /* ==========================================================================
-   BATCH LOUNGES (LIVE CHAT)
+   BATCH LOUNGE (CHAT) LOGIC
    ========================================================================== */
 
 function switchChatBatch(batch) {
   activeChatBatch = batch;
   ['2024', '2022', '2020', 'all'].forEach(b => {
     const btn = document.getElementById(`chat-batch-${b}`);
-    if (b === batch) {
-      btn.className = "w-full text-left px-3 py-2 rounded-lg bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 font-semibold flex items-center justify-between";
-    } else {
-      btn.className = "w-full text-left px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center justify-between";
+    if (btn) {
+      btn.className = b === batch 
+        ? "w-full text-left px-3 py-2 rounded-lg bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 font-semibold flex items-center justify-between"
+        : "w-full text-left px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center justify-between";
     }
   });
   renderChat();
@@ -500,6 +523,7 @@ function switchChatBatch(batch) {
 
 function renderChat() {
   const container = document.getElementById("chatMessages");
+  if (!container) return;
   container.innerHTML = "";
   const messages = chatMessagesData[activeChatBatch] || [];
 
@@ -542,14 +566,12 @@ function toggleDarkMode() {
   const html = document.documentElement;
   const isDark = html.classList.toggle('dark');
   const icon = document.getElementById('theme-icon');
-  icon.className = isDark ? "fa-solid fa-sun" : "fa-solid fa-moon";
+  if (icon) icon.className = isDark ? "fa-solid fa-sun" : "fa-solid fa-moon";
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
 }
 
 if (localStorage.getItem('theme') === 'dark') {
   document.documentElement.classList.add('dark');
-  document.getElementById('theme-icon').className = "fa-solid fa-sun";
+  const icon = document.getElementById('theme-icon');
+  if (icon) icon.className = "fa-solid fa-sun";
 }
-
-// Initial Run
-renderFeed();
