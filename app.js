@@ -1,4 +1,7 @@
-// Initial Mock Posts Data
+/* ==========================================================================
+   INITIAL MOCK STATE
+   ========================================================================== */
+
 const defaultPosts = [
   {
     id: 1,
@@ -11,8 +14,7 @@ const defaultPosts = [
     likes: 18,
     hasLiked: false,
     comments: [
-      { id: 101, author: "Rahul Verma", text: "Huge congratulations Aman! Proud moment!" },
-      { id: 102, author: "Pooja Gupta", text: "Treat pending bro 🎉" }
+      { id: 101, author: "Rahul Verma", text: "Huge congratulations Aman! Proud moment!" }
     ]
   },
   {
@@ -21,201 +23,266 @@ const defaultPosts = [
     batch: "2023",
     category: "opportunity",
     time: "4 hours ago",
-    content: "My team at StartupLabs is hiring 2 Frontend Interns (React / Tailwind). School alumni get direct referral. DM me with your portfolio!",
+    content: "My startup team is hiring 2 Frontend Interns (React/Tailwind). School alumni get direct fast-track interviews!",
     imageUrl: "",
     likes: 24,
-    hasLiked: false,
-    comments: [
-      { id: 103, author: "Karan Patel", text: "Sent you my portfolio on LinkedIn!" }
-    ]
-  },
-  {
-    id: 3,
-    author: "Rohan Kapoor",
-    batch: "2020",
-    category: "reunion",
-    time: "Yesterday",
-    content: "Annual Cricket Cup + Class of 2020 reunion scheduled for next Saturday at the school sports complex. Reach out to RSVP!",
-    imageUrl: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&auto=format&fit=crop&q=60",
-    likes: 31,
-    hasLiked: false,
-    comments: [
-      { id: 104, author: "Vikram Singh", text: "Count me in for bowling 🏏" }
-    ]
-  },
-  {
-    id: 4,
-    author: "Ananya Iyer",
-    batch: "2021",
-    category: "achievement",
-    time: "2 days ago",
-    content: "Our team just published our first research paper on Edge Computing at IEEE! Thankful to Mr. Sharma for sparking my interest in networks.",
-    imageUrl: "",
-    likes: 15,
     hasLiked: false,
     comments: []
   }
 ];
 
-// Initialize storage
-if (!localStorage.getItem("alumni_posts_v2")) {
-  localStorage.setItem("alumni_posts_v2", JSON.stringify(defaultPosts));
+const alumniProfiles = [
+  {
+    name: "Aman Sharma",
+    batch: "2022",
+    role: "SWE Intern @ Google",
+    city: "Bengaluru, India",
+    lat: 12.9716,
+    lng: 77.5946,
+    openToMentor: true,
+    skills: ["Python", "Cloud", "Distributed Systems"]
+  },
+  {
+    name: "Pooja Verma",
+    batch: "2020",
+    role: "Product Designer @ Swiggy",
+    city: "Gurugram, India",
+    lat: 28.4595,
+    lng: 77.0266,
+    openToMentor: true,
+    skills: ["UI/UX", "Figma", "Design Systems"]
+  },
+  {
+    name: "Rohan Kapoor",
+    batch: "2020",
+    role: "Masters in CS @ Univ of Toronto",
+    city: "Toronto, Canada",
+    lat: 43.6532,
+    lng: -79.3832,
+    openToMentor: false,
+    skills: ["AI/ML", "Robotics"]
+  },
+  {
+    name: "Ananya Iyer",
+    batch: "2021",
+    role: "Data Analyst @ Deloitte",
+    city: "Mumbai, India",
+    lat: 19.0760,
+    lng: 72.8777,
+    openToMentor: true,
+    skills: ["SQL", "Tableau", "Analytics"]
+  }
+];
+
+const eventsData = [
+  {
+    id: 1,
+    title: "Class of 2020 - 6-Year Reunion & Dinner",
+    date: "Saturday, Oct 24, 2026 • 7:00 PM",
+    location: "Grand Ballroom, City Center",
+    category: "Reunion",
+    going: 42,
+    userRsvp: null
+  },
+  {
+    id: 2,
+    title: "Alumni Cricket League 2026",
+    date: "Sunday, Nov 15, 2026 • 9:00 AM",
+    location: "School Sports Ground",
+    category: "Sports",
+    going: 28,
+    userRsvp: null
+  }
+];
+
+const yearbookPhotos = [
+  {
+    title: "Annual Sports Day Championship",
+    batch: "2024",
+    tag: "Throwback",
+    imageUrl: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&auto=format&fit=crop&q=60",
+    caption: "Green House lifting the overall champions trophy after 4 years!"
+  },
+  {
+    title: "Class 12th Farewell Evening",
+    batch: "2022",
+    tag: "Farewell",
+    imageUrl: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&auto=format&fit=crop&q=60",
+    caption: "The last group picture right outside the library courtyard."
+  },
+  {
+    title: "Science Exhibition Winners",
+    batch: "2023",
+    tag: "Milestone",
+    imageUrl: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&auto=format&fit=crop&q=60",
+    caption: "Working on the IoT Smart City model late in the physics lab."
+  }
+];
+
+let chatMessagesData = {
+  "2024": [
+    { sender: "Karan", time: "10:14 AM", text: "Anyone free for coffee near campus today?" },
+    { sender: "JD (You)", time: "10:16 AM", text: "I can join after 4 PM!" }
+  ],
+  "2022": [
+    { sender: "Aman", time: "Yesterday", text: "Let me know if anyone needs referrals for engineering roles." }
+  ],
+  "2020": [
+    { sender: "Pooja", time: "Yesterday", text: "Don't forget to RSVP for the dinner reunion!" }
+  ],
+  "all": [
+    { sender: "Admin", time: "Aug 15", text: "Welcome to the verified AlumniHub network!" }
+  ]
+};
+
+/* ==========================================================================
+   STATE INITIALIZATION
+   ========================================================================== */
+
+if (!localStorage.getItem("alumni_posts_v3")) {
+  localStorage.setItem("alumni_posts_v3", JSON.stringify(defaultPosts));
+}
+if (!localStorage.getItem("alumni_events_v3")) {
+  localStorage.setItem("alumni_events_v3", JSON.stringify(eventsData));
 }
 
 let activeFilter = "all";
-let searchQuery = "";
+let mentorOnlyFilter = false;
+let activeChatBatch = "2024";
+let mapInstance = null;
+
+/* ==========================================================================
+   TAB ROUTER
+   ========================================================================== */
+
+function switchTab(tabId) {
+  const tabs = ['feed', 'directory', 'events', 'yearbook', 'chat'];
+  tabs.forEach(tab => {
+    const view = document.getElementById(`view-${tab}`);
+    const btn = document.getElementById(`tab-${tab}`);
+    if (tab === tabId) {
+      view.classList.remove('hidden');
+      btn.className = "tab-btn active-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition";
+    } else {
+      view.classList.add('hidden');
+      btn.className = "tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700";
+    }
+  });
+
+  if (tabId === 'directory') {
+    renderDirectory();
+    setTimeout(initMap, 200);
+  } else if (tabId === 'events') {
+    renderEvents();
+  } else if (tabId === 'yearbook') {
+    renderYearbook();
+  } else if (tabId === 'chat') {
+    renderChat();
+  } else {
+    renderFeed();
+  }
+}
+
+/* ==========================================================================
+   FEED LOGIC
+   ========================================================================== */
 
 function getPosts() {
-  return JSON.parse(localStorage.getItem("alumni_posts_v2")) || [];
+  return JSON.parse(localStorage.getItem("alumni_posts_v3")) || [];
 }
 
 function savePosts(posts) {
-  localStorage.setItem("alumni_posts_v2", JSON.stringify(posts));
-  renderFeed();
-}
-
-function handleSearch(query) {
-  searchQuery = query.toLowerCase();
+  localStorage.setItem("alumni_posts_v3", JSON.stringify(posts));
   renderFeed();
 }
 
 function filterPosts(type) {
   activeFilter = type;
-  
-  // Highlight active filter button
-  const filterButtons = ['all', 'achievement', 'opportunity', 'reunion'];
-  filterButtons.forEach(btn => {
+  ['all', 'achievement', 'opportunity', 'reunion'].forEach(btn => {
     const el = document.getElementById(`filter-${btn}`);
     if (el) {
-      if (btn === type) {
-        el.className = "w-full text-left px-3 py-2 rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 flex items-center transition font-semibold";
-      } else {
-        el.className = "w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 flex items-center transition font-medium";
-      }
+      el.className = btn === type 
+        ? "w-full text-left px-3 py-2 rounded-lg text-blue-600 bg-blue-50 dark:bg-gray-700 dark:text-blue-400 font-semibold flex items-center transition"
+        : "w-full text-left px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center transition";
     }
   });
-
   renderFeed();
 }
 
 function renderFeed() {
-  const feedContainer = document.getElementById("postsFeed");
+  const container = document.getElementById("postsFeed");
   const posts = getPosts();
-  feedContainer.innerHTML = "";
+  container.innerHTML = "";
 
-  // Apply Category Filter & Search Filter
-  const filteredPosts = posts.filter(post => {
-    const matchesCategory = activeFilter === "all" || post.category === activeFilter;
-    const matchesSearch = !searchQuery || 
-      post.author.toLowerCase().includes(searchQuery) ||
-      post.content.toLowerCase().includes(searchQuery) ||
-      post.batch.includes(searchQuery);
-    return matchesCategory && matchesSearch;
-  });
+  const filtered = activeFilter === "all" ? posts : posts.filter(p => p.category === activeFilter);
 
-  if (filteredPosts.length === 0) {
-    feedContainer.innerHTML = `
-      <div class="text-center py-12 bg-white rounded-xl border border-gray-200 text-gray-500 space-y-2">
-        <i class="fa-regular fa-folder-open text-3xl text-gray-400"></i>
-        <p class="font-medium">No updates found</p>
-        <p class="text-xs text-gray-400">Try changing your search keywords or category filter.</p>
-      </div>`;
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="text-center py-8 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-500">No updates in this category.</div>`;
     return;
   }
 
-  filteredPosts.forEach(post => {
+  filtered.forEach(post => {
     const postEl = document.createElement("article");
-    postEl.className = "bg-white p-5 rounded-xl shadow-sm border border-gray-200 space-y-3";
+    postEl.className = "bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3";
 
-    // Category Badge
-    let badgeHtml = '<span class="text-xs bg-gray-100 text-gray-700 font-semibold px-2.5 py-0.5 rounded-full">💬 General</span>';
-    if (post.category === "achievement") {
-      badgeHtml = '<span class="text-xs bg-yellow-100 text-yellow-800 font-semibold px-2.5 py-0.5 rounded-full">🏆 Achievement</span>';
-    } else if (post.category === "opportunity") {
-      badgeHtml = '<span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-0.5 rounded-full">💼 Job / Career</span>';
-    } else if (post.category === "reunion") {
-      badgeHtml = '<span class="text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-0.5 rounded-full">📅 Reunion</span>';
-    }
+    let badge = `<span class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2.5 py-0.5 rounded-full">💬 General</span>`;
+    if (post.category === 'achievement') badge = `<span class="text-xs bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300 font-semibold px-2.5 py-0.5 rounded-full">🏆 Achievement</span>`;
+    if (post.category === 'opportunity') badge = `<span class="text-xs bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 font-semibold px-2.5 py-0.5 rounded-full">💼 Job / Referral</span>`;
+    if (post.category === 'reunion') badge = `<span class="text-xs bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-semibold px-2.5 py-0.5 rounded-full">📅 Reunion</span>`;
 
-    // Optional Image attachment
-    const imageAttachment = post.imageUrl 
-      ? `<div class="rounded-lg overflow-hidden border border-gray-100 max-h-80"><img src="${post.imageUrl}" alt="Post image" class="w-full h-full object-cover"/></div>`
-      : '';
+    const imgTag = post.imageUrl ? `<div class="rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700 max-h-80"><img src="${post.imageUrl}" class="w-full h-full object-cover"/></div>` : '';
 
-    // Comments HTML
-    const commentsList = post.comments && post.comments.length > 0 
+    const commentsList = post.comments && post.comments.length > 0
       ? post.comments.map(c => `
-          <div class="bg-gray-50 p-2.5 rounded-lg text-xs space-y-0.5 border border-gray-100">
-            <span class="font-semibold text-gray-800">${c.author}:</span>
-            <span class="text-gray-600">${c.text}</span>
-          </div>
-        `).join('')
-      : `<p class="text-xs text-gray-400 italic">No comments yet. Be the first to reply!</p>`;
+          <div class="bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-lg text-xs border border-gray-100 dark:border-gray-700">
+            <span class="font-semibold text-gray-900 dark:text-white">${c.author}:</span>
+            <span class="text-gray-600 dark:text-gray-300">${c.text}</span>
+          </div>`).join('')
+      : `<p class="text-xs text-gray-400 italic">No comments yet.</p>`;
 
     postEl.innerHTML = `
       <div class="flex justify-between items-start">
         <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center">
-            ${post.author.charAt(0)}
-          </div>
+          <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center">${post.author.charAt(0)}</div>
           <div>
-            <h3 class="font-semibold text-gray-900 text-sm">${post.author}</h3>
-            <p class="text-xs text-gray-500">Batch of '${post.batch} • ${post.time}</p>
+            <div class="flex items-center space-x-1.5">
+              <h3 class="font-semibold text-gray-900 dark:text-white text-sm">${post.author}</h3>
+              <i class="fa-solid fa-circle-check text-blue-500 text-xs" title="Verified"></i>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Batch of '${post.batch} • ${post.time}</p>
           </div>
         </div>
-        ${badgeHtml}
+        ${badge}
       </div>
 
-      <p class="text-gray-800 text-sm leading-relaxed">${post.content}</p>
+      <p class="text-gray-800 dark:text-gray-200 text-sm leading-relaxed">${post.content}</p>
+      ${imgTag}
 
-      ${imageAttachment}
-
-      <div class="pt-2 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
-        <button onclick="toggleLike(${post.id})" class="flex items-center space-x-1.5 font-medium transition ${post.hasLiked ? 'text-red-500' : 'hover:text-red-500'}">
+      <div class="pt-2 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+        <button onclick="toggleLike(${post.id})" class="flex items-center space-x-1.5 font-medium ${post.hasLiked ? 'text-red-500' : 'hover:text-red-500'}">
           <i class="${post.hasLiked ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
           <span>${post.likes} Likes</span>
         </button>
-
-        <span class="text-gray-400 font-medium">
-          <i class="fa-regular fa-comment mr-1"></i> ${post.comments ? post.comments.length : 0} Comments
-        </span>
+        <span><i class="fa-regular fa-comment mr-1"></i> ${post.comments ? post.comments.length : 0} Replies</span>
       </div>
 
-      <!-- Comment Section -->
-      <div class="pt-3 border-t border-gray-50 space-y-2">
-        <div class="space-y-1.5">
-          ${commentsList}
-        </div>
-        <div class="flex items-center space-x-2 pt-1">
-          <input 
-            type="text" 
-            id="comment-input-${post.id}" 
-            placeholder="Write a comment..." 
-            class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-blue-500"
-            onkeypress="if(event.key === 'Enter') addComment(${post.id})"
-          />
-          <button 
-            onclick="addComment(${post.id})" 
-            class="text-xs bg-gray-200 hover:bg-blue-600 hover:text-white font-medium px-3 py-1.5 rounded-lg transition"
-          >
-            Reply
-          </button>
+      <div class="pt-2 space-y-2">
+        <div class="space-y-1">${commentsList}</div>
+        <div class="flex gap-2 pt-1">
+          <input type="text" id="comment-input-${post.id}" placeholder="Write a comment..." class="w-full bg-gray-50 dark:bg-gray-700 dark:text-white border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-1 text-xs outline-none focus:border-blue-500" onkeypress="if(event.key==='Enter') addComment(${post.id})"/>
+          <button onclick="addComment(${post.id})" class="text-xs bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium px-3 py-1 rounded-lg hover:bg-blue-600 hover:text-white transition">Reply</button>
         </div>
       </div>
     `;
-
-    feedContainer.appendChild(postEl);
+    container.appendChild(postEl);
   });
 }
 
 function addPost() {
-  const contentInput = document.getElementById("postContent");
-  const imageInput = document.getElementById("postImageUrl");
+  const content = document.getElementById("postContent").value.trim();
+  const imageUrl = document.getElementById("postImageUrl").value.trim();
   const category = document.getElementById("postCategory").value;
   const batch = document.getElementById("postBatch").value;
-  
-  const content = contentInput.value.trim();
-  const imageUrl = imageInput.value.trim();
 
   if (!content) return;
 
@@ -234,9 +301,8 @@ function addPost() {
 
   const posts = getPosts();
   posts.unshift(newPost);
-  
-  contentInput.value = "";
-  imageInput.value = "";
+  document.getElementById("postContent").value = "";
+  document.getElementById("postImageUrl").value = "";
   savePosts(posts);
 }
 
@@ -250,24 +316,240 @@ function toggleLike(id) {
   }
 }
 
-function addComment(postId) {
-  const input = document.getElementById(`comment-input-${postId}`);
+function addComment(id) {
+  const input = document.getElementById(`comment-input-${id}`);
   const text = input.value.trim();
   if (!text) return;
 
   const posts = getPosts();
-  const post = posts.find(p => p.id === postId);
+  const post = posts.find(p => p.id === id);
   if (post) {
     if (!post.comments) post.comments = [];
-    post.comments.push({
-      id: Date.now(),
-      author: "You",
-      text: text
-    });
+    post.comments.push({ id: Date.now(), author: "You", text: text });
     input.value = "";
     savePosts(posts);
   }
 }
 
-// Initial render call
+/* ==========================================================================
+   ALUMNI DIRECTORY & GEOMAP
+   ========================================================================= */
+
+function toggleMentorOnlyFilter() {
+  mentorOnlyFilter = !mentorOnlyFilter;
+  const btn = document.getElementById("mentor-filter-btn");
+  btn.className = mentorOnlyFilter 
+    ? "px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-medium transition"
+    : "px-3 py-1.5 rounded-lg border border-emerald-500 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-gray-700 font-medium transition";
+  renderDirectory();
+}
+
+function renderDirectory() {
+  const grid = document.getElementById("directoryGrid");
+  const query = (document.getElementById("dirSearchInput")?.value || "").toLowerCase();
+  grid.innerHTML = "";
+
+  const filtered = alumniProfiles.filter(alumnus => {
+    const matchesMentor = !mentorOnlyFilter || alumnus.openToMentor;
+    const matchesQuery = !query || alumnus.name.toLowerCase().includes(query) || alumnus.role.toLowerCase().includes(query) || alumnus.city.toLowerCase().includes(query);
+    return matchesMentor && matchesQuery;
+  });
+
+  filtered.forEach(a => {
+    const card = document.createElement("div");
+    card.className = "card-hover bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 space-y-3";
+    card.innerHTML = `
+      <div class="flex justify-between items-start">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center">${a.name.charAt(0)}</div>
+          <div>
+            <h4 class="font-bold text-gray-900 dark:text-white text-sm flex items-center gap-1">
+              ${a.name} <i class="fa-solid fa-circle-check text-blue-500 text-xs"></i>
+            </h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Batch of '${a.batch}</p>
+          </div>
+        </div>
+        ${a.openToMentor ? '<span class="text-[10px] bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 font-semibold px-2 py-0.5 rounded-full">Mentor</span>' : ''}
+      </div>
+      <div>
+        <p class="text-xs font-semibold text-gray-800 dark:text-gray-200">${a.role}</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-0.5">
+          <i class="fa-solid fa-location-dot text-red-500"></i> ${a.city}
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-1 pt-1">
+        ${a.skills.map(s => `<span class="text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded">${s}</span>`).join('')}
+      </div>
+      <button class="w-full text-xs font-semibold bg-blue-50 dark:bg-gray-700 hover:bg-blue-600 hover:text-white text-blue-600 dark:text-blue-300 py-1.5 rounded-lg transition">
+        Connect / Message
+      </button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function initMap() {
+  if (mapInstance) return;
+  mapInstance = L.map('alumniMap').setView([20.5937, 78.9629], 3);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(mapInstance);
+
+  alumniProfiles.forEach(a => {
+    L.marker([a.lat, a.lng]).addTo(mapInstance)
+      .bindPopup(`<b>${a.name}</b> (Batch '${a.batch})<br>${a.role}<br>📍 ${a.city}`);
+  });
+}
+
+/* ==========================================================================
+   EVENTS & RSVP LOGIC
+   ========================================================================== */
+
+function renderEvents() {
+  const grid = document.getElementById("eventsGrid");
+  const events = JSON.parse(localStorage.getItem("alumni_events_v3")) || eventsData;
+  grid.innerHTML = "";
+
+  events.forEach(evt => {
+    const card = document.createElement("div");
+    card.className = "card-hover bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 space-y-4";
+    card.innerHTML = `
+      <div class="flex justify-between items-start">
+        <span class="text-xs bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 font-semibold px-2.5 py-0.5 rounded-full">${evt.category}</span>
+        <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400"><i class="fa-solid fa-users mr-1"></i> ${evt.going} Confirmed</span>
+      </div>
+      <div>
+        <h3 class="font-bold text-gray-900 dark:text-white text-base">${evt.title}</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1"><i class="fa-regular fa-clock mr-1.5"></i> ${evt.date}</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"><i class="fa-solid fa-location-dot mr-1.5 text-red-500"></i> ${evt.location}</p>
+      </div>
+      <div class="pt-2 border-t border-gray-100 dark:border-gray-700 flex gap-2">
+        <button onclick="handleRSVP(${evt.id}, 'going')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold ${evt.userRsvp === 'going' ? 'bg-emerald-600 text-white' : 'bg-emerald-50 text-emerald-600 dark:bg-gray-700 dark:text-emerald-300'} transition">
+          <i class="fa-solid fa-check mr-1"></i> Going
+        </button>
+        <button onclick="handleRSVP(${evt.id}, 'interested')" class="flex-1 py-1.5 rounded-lg text-xs font-semibold ${evt.userRsvp === 'interested' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-600 dark:bg-gray-700 dark:text-blue-300'} transition">
+          <i class="fa-regular fa-star mr-1"></i> Interested
+        </button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function handleRSVP(id, status) {
+  const events = JSON.parse(localStorage.getItem("alumni_events_v3")) || eventsData;
+  const evt = events.find(e => e.id === id);
+  if (evt) {
+    if (evt.userRsvp === status) {
+      evt.userRsvp = null;
+      if (status === 'going') evt.going--;
+    } else {
+      if (evt.userRsvp === 'going') evt.going--;
+      evt.userRsvp = status;
+      if (status === 'going') evt.going++;
+    }
+    localStorage.setItem("alumni_events_v3", JSON.stringify(events));
+    renderEvents();
+  }
+}
+
+/* ==========================================================================
+   MEMORY WALL & YEARBOOK
+   ========================================================================== */
+
+function renderYearbook() {
+  const grid = document.getElementById("yearbookGrid");
+  grid.innerHTML = "";
+
+  yearbookPhotos.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "card-hover bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm";
+    card.innerHTML = `
+      <div class="h-48 overflow-hidden bg-gray-100">
+        <img src="${p.imageUrl}" alt="${p.title}" class="w-full h-full object-cover hover:scale-105 transition duration-300" />
+      </div>
+      <div class="p-4 space-y-1.5">
+        <div class="flex justify-between items-center text-xs">
+          <span class="font-bold text-blue-600 dark:text-blue-400">Batch '${p.batch}</span>
+          <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded text-[10px] font-semibold">${p.tag}</span>
+        </div>
+        <h4 class="font-bold text-gray-900 dark:text-white text-sm">${p.title}</h4>
+        <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">${p.caption}</p>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+/* ==========================================================================
+   BATCH LOUNGES (LIVE CHAT)
+   ========================================================================== */
+
+function switchChatBatch(batch) {
+  activeChatBatch = batch;
+  ['2024', '2022', '2020', 'all'].forEach(b => {
+    const btn = document.getElementById(`chat-batch-${b}`);
+    if (b === batch) {
+      btn.className = "w-full text-left px-3 py-2 rounded-lg bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 font-semibold flex items-center justify-between";
+    } else {
+      btn.className = "w-full text-left px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center justify-between";
+    }
+  });
+  renderChat();
+}
+
+function renderChat() {
+  const container = document.getElementById("chatMessages");
+  container.innerHTML = "";
+  const messages = chatMessagesData[activeChatBatch] || [];
+
+  messages.forEach(msg => {
+    const isMe = msg.sender.includes("You");
+    const msgEl = document.createElement("div");
+    msgEl.className = `flex flex-col ${isMe ? 'items-end' : 'items-start'}`;
+    msgEl.innerHTML = `
+      <span class="text-[10px] text-gray-400 mb-0.5">${msg.sender} • ${msg.time}</span>
+      <div class="px-3.5 py-2 rounded-2xl max-w-xs text-xs ${isMe ? 'bg-blue-600 text-white rounded-br-none' : 'bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-600 rounded-bl-none'}">
+        ${msg.text}
+      </div>
+    `;
+    container.appendChild(msgEl);
+  });
+  container.scrollTop = container.scrollHeight;
+}
+
+function sendChatMessage() {
+  const input = document.getElementById("chatInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  if (!chatMessagesData[activeChatBatch]) chatMessagesData[activeChatBatch] = [];
+  chatMessagesData[activeChatBatch].push({
+    sender: "JD (You)",
+    time: "Just now",
+    text: text
+  });
+
+  input.value = "";
+  renderChat();
+}
+
+/* ==========================================================================
+   THEME TOGGLE
+   ========================================================================== */
+
+function toggleDarkMode() {
+  const html = document.documentElement;
+  const isDark = html.classList.toggle('dark');
+  const icon = document.getElementById('theme-icon');
+  icon.className = isDark ? "fa-solid fa-sun" : "fa-solid fa-moon";
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
+if (localStorage.getItem('theme') === 'dark') {
+  document.documentElement.classList.add('dark');
+  document.getElementById('theme-icon').className = "fa-solid fa-sun";
+}
+
+// Initial Run
 renderFeed();
