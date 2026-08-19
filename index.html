@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AlumniHub - Complete School Passout Platform</title>
+  <title>AlumniHub - Official School Passout Network</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -29,41 +29,47 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans min-h-screen transition-colors duration-200">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans min-h-screen flex flex-col transition-colors duration-200">
 
   <!-- Main Navigation Bar -->
   <header class="bg-blue-600 dark:bg-gray-800 text-white shadow-md sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap justify-between items-center gap-3">
       
-      <!-- Brand & Badge -->
-      <div class="flex items-center space-x-2">
+      <!-- Brand Logo (Links to Home) -->
+      <a href="#home" class="flex items-center space-x-2 cursor-pointer">
         <i class="fa-solid fa-graduation-cap text-2xl text-yellow-300"></i>
         <div>
           <h1 class="text-lg font-bold tracking-wide leading-none">AlumniHub</h1>
-          <span class="text-[10px] text-blue-200 dark:text-gray-400 font-medium">Verified Passouts Network</span>
+          <span class="text-[10px] text-blue-200 dark:text-gray-400 font-medium">School Passouts Portal</span>
         </div>
-      </div>
+      </a>
 
-      <!-- Navigation Tabs -->
+      <!-- Navigation Links (Multi-Page Hash Router) -->
       <nav class="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium overflow-x-auto py-1">
-        <button onclick="switchTab('feed')" id="tab-feed" class="tab-btn active-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+        <a href="#home" id="nav-home" class="nav-link px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-house"></i> <span>Home</span>
+        </a>
+        <a href="#feed" id="nav-feed" class="nav-link px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700">
           <i class="fa-solid fa-newspaper"></i> <span>Feed</span>
-        </button>
-        <button onclick="switchTab('directory')" id="tab-directory" class="tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700">
-          <i class="fa-solid fa-users"></i> <span>Directory & Map</span>
-        </button>
-        <button onclick="switchTab('events')" id="tab-events" class="tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700">
-          <i class="fa-solid fa-calendar-star"></i> <span>Events & RSVP</span>
-        </button>
-        <button onclick="switchTab('yearbook')" id="tab-yearbook" class="tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700">
-          <i class="fa-solid fa-images"></i> <span>Memory Wall</span>
-        </button>
-        <button onclick="switchTab('chat')" id="tab-chat" class="tab-btn px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700">
-          <i class="fa-solid fa-comments"></i> <span>Batch Lounge</span>
-        </button>
+        </a>
+        <a href="#directory" id="nav-directory" class="nav-link px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700">
+          <i class="fa-solid fa-users"></i> <span>Directory</span>
+        </a>
+        <a href="#events" id="nav-events" class="nav-link px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700">
+          <i class="fa-solid fa-calendar-star"></i> <span>Events</span>
+        </a>
+        <a href="#yearbook" id="nav-yearbook" class="nav-link px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700">
+          <i class="fa-solid fa-images"></i> <span>Yearbook</span>
+        </a>
+        <a href="#chat" id="nav-chat" class="nav-link px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700">
+          <i class="fa-solid fa-comments"></i> <span>Lounge</span>
+        </a>
+        <a href="#about" id="nav-about" class="nav-link px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition text-blue-100 hover:bg-blue-700 dark:hover:bg-gray-700">
+          <i class="fa-solid fa-circle-info"></i> <span>About</span>
+        </a>
       </nav>
 
-      <!-- Right Controls: Dark Mode & User Profile -->
+      <!-- Theme Toggle & Profile Info -->
       <div class="flex items-center space-x-3">
         <button onclick="toggleDarkMode()" class="p-2 text-blue-100 hover:text-white rounded-lg hover:bg-blue-700 dark:hover:bg-gray-700 text-sm transition" title="Toggle Theme">
           <i id="theme-icon" class="fa-solid fa-moon"></i>
@@ -83,11 +89,84 @@
   </header>
 
   <!-- Main Container -->
-  <main class="max-w-6xl mx-auto px-4 py-6">
+  <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full">
 
-    <!-- ================= VIEW 1: FEED ================= -->
-    <section id="view-feed" class="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <!-- Sidebar Filters -->
+    <!-- ================= PAGE 1: HOME LANDING PAGE ================= -->
+    <section id="page-home" class="page-view space-y-12 py-4">
+      
+      <!-- Hero Banner -->
+      <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 rounded-2xl p-8 sm:p-12 text-white shadow-lg text-center space-y-6">
+        <span class="bg-blue-500/40 border border-white/20 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+          Exclusive Alumni Portal
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight max-w-2xl mx-auto leading-tight">
+          Reconnecting School Passouts Across the Globe
+        </h1>
+        <p class="text-blue-100 text-sm sm:text-base max-w-xl mx-auto">
+          Share your milestones, offer mentorship, find job referrals, and stay close to your batchmates from graduation to career.
+        </p>
+        <div class="flex flex-wrap justify-center gap-3 pt-2">
+          <a href="#feed" class="bg-white text-blue-600 font-bold px-6 py-2.5 rounded-xl shadow hover:bg-blue-50 transition">
+            <i class="fa-solid fa-newspaper mr-1.5"></i> Open Community Feed
+          </a>
+          <a href="#directory" class="bg-blue-800/80 border border-white/20 text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-blue-800 transition">
+            <i class="fa-solid fa-map-location-dot mr-1.5"></i> Explore Alumni Map
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 text-center space-y-1">
+          <h3 class="text-2xl sm:text-3xl font-extrabold text-blue-600 dark:text-blue-400">1,250+</h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Registered Passouts</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 text-center space-y-1">
+          <h3 class="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">18+</h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Batches Represented</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 text-center space-y-1">
+          <h3 class="text-2xl sm:text-3xl font-extrabold text-yellow-500">85+</h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Active Mentors</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 text-center space-y-1">
+          <h3 class="text-2xl sm:text-3xl font-extrabold text-amber-500">12</h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Annual Reunions</p>
+        </div>
+      </div>
+
+      <!-- Feature Highlights -->
+      <div class="space-y-4">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white text-center">Everything in One Network</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+            <h3 class="font-bold text-gray-900 dark:text-white">Milestones & Achievements</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Broadcast career moves, college admissions, research papers, and startup launches to schoolmates.</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-handshake"></i>
+            </div>
+            <h3 class="font-bold text-gray-900 dark:text-white">Alumni Mentorship</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Connect directly with working seniors for career counseling, tech stack advice, and mock interviews.</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 space-y-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <h3 class="font-bold text-gray-900 dark:text-white">Reunions & Meetups</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Coordinate batch gatherings, annual dinners, sports day matches, and track verified RSVPs.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================= PAGE 2: FEED ================= -->
+    <section id="page-feed" class="page-view hidden grid grid-cols-1 md:grid-cols-4 gap-6">
       <aside class="md:col-span-1 space-y-4">
         <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
           <h2 class="font-semibold text-gray-700 dark:text-gray-200 mb-3 text-xs uppercase tracking-wider">Feed Filter</h2>
@@ -116,9 +195,7 @@
         </div>
       </aside>
 
-      <!-- Main Feed Column -->
       <div class="md:col-span-3 space-y-6">
-        <!-- Post Creator Box -->
         <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-3">
           <div class="flex items-center space-x-3">
             <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">JD</div>
@@ -126,7 +203,7 @@
           </div>
           <div class="flex items-center space-x-2 pl-12">
             <i class="fa-regular fa-image text-gray-400 text-sm"></i>
-            <input id="postImageUrl" type="url" placeholder="Paste Image / Photo URL (Optional)" class="w-full text-xs text-gray-600 dark:text-gray-300 bg-transparent border-b border-gray-200 dark:border-gray-700 pb-1 focus:outline-none focus:border-blue-500" />
+            <input id="postImageUrl" type="url" placeholder="Paste Image URL (Optional)" class="w-full text-xs text-gray-600 dark:text-gray-300 bg-transparent border-b border-gray-200 dark:border-gray-700 pb-1 focus:outline-none focus:border-blue-500" />
           </div>
           <div class="flex flex-wrap gap-2 justify-between items-center pt-2 border-t border-gray-100 dark:border-gray-700 text-xs">
             <div class="flex gap-2">
@@ -153,8 +230,8 @@
       </div>
     </section>
 
-    <!-- ================= VIEW 2: DIRECTORY & GEOMAP ================= -->
-    <section id="view-directory" class="hidden space-y-6">
+    <!-- ================= PAGE 3: DIRECTORY ================= -->
+    <section id="page-directory" class="page-view hidden space-y-6">
       <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 space-y-4">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
@@ -168,42 +245,32 @@
             <input type="text" id="dirSearchInput" oninput="renderDirectory()" placeholder="Filter by company, city..." class="bg-gray-50 dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 focus:outline-none" />
           </div>
         </div>
-
-        <!-- Leaflet Map Container -->
         <div id="alumniMap" class="w-full h-72 rounded-xl border border-gray-200 dark:border-gray-700 z-10"></div>
       </div>
-
-      <!-- Directory Cards Grid -->
       <div id="directoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </section>
 
-    <!-- ================= VIEW 3: EVENTS & RSVP ================= -->
-    <section id="view-events" class="hidden space-y-6">
-      <div class="flex justify-between items-center">
-        <div>
-          <h2 class="text-lg font-bold text-gray-900 dark:text-white">Upcoming Batch Reunions & Events</h2>
-          <p class="text-xs text-gray-500 dark:text-gray-400">RSVP to get entry passes and invite fellow passouts.</p>
-        </div>
+    <!-- ================= PAGE 4: EVENTS ================= -->
+    <section id="page-events" class="page-view hidden space-y-6">
+      <div>
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white">Upcoming Batch Reunions & Events</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400">RSVP to get entry passes and invite fellow passouts.</p>
       </div>
       <div id="eventsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
     </section>
 
-    <!-- ================= VIEW 4: MEMORY WALL (YEARBOOK) ================= -->
-    <section id="view-yearbook" class="hidden space-y-6">
-      <div class="flex justify-between items-center">
-        <div>
-          <h2 class="text-lg font-bold text-gray-900 dark:text-white">Memory Wall & Digital Yearbook</h2>
-          <p class="text-xs text-gray-500 dark:text-gray-400">School trips, sports days, and before-and-after graduation moments.</p>
-        </div>
+    <!-- ================= PAGE 5: YEARBOOK ================= -->
+    <section id="page-yearbook" class="page-view hidden space-y-6">
+      <div>
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white">Memory Wall & Digital Yearbook</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400">School trips, sports days, and before-and-after graduation moments.</p>
       </div>
       <div id="yearbookGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5"></div>
     </section>
 
-    <!-- ================= VIEW 5: BATCH LOUNGE (CHAT) ================= -->
-    <section id="view-chat" class="hidden">
+    <!-- ================= PAGE 6: BATCH LOUNGE ================= -->
+    <section id="page-chat" class="page-view hidden">
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 grid grid-cols-1 md:grid-cols-4 h-[550px] overflow-hidden">
-        
-        <!-- Batch Channels Sidebar -->
         <div class="md:col-span-1 border-r border-gray-200 dark:border-gray-700 p-3 flex flex-col justify-between">
           <div>
             <h3 class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400 mb-3 px-2">Batch Channels</h3>
@@ -232,15 +299,12 @@
             </ul>
           </div>
           <div class="p-2 bg-gray-50 dark:bg-gray-700 rounded-lg text-[11px] text-gray-500 dark:text-gray-300">
-            <i class="fa-solid fa-lock text-emerald-500 mr-1"></i> End-to-end verified alumni room.
+            <i class="fa-solid fa-lock text-emerald-500 mr-1"></i> Passout-only discussion room.
           </div>
         </div>
 
-        <!-- Chat Stream Window -->
         <div class="md:col-span-3 flex flex-col justify-between h-full bg-gray-50/50 dark:bg-gray-900/50">
           <div id="chatMessages" class="p-4 overflow-y-auto space-y-3 flex-1 text-sm"></div>
-          
-          <!-- Chat Input -->
           <div class="p-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex items-center gap-2">
             <input id="chatInput" type="text" placeholder="Type a message to your batch..." class="w-full bg-gray-100 dark:bg-gray-700 dark:text-white border-0 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onkeypress="if(event.key==='Enter') sendChatMessage()" />
             <button onclick="sendChatMessage()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
@@ -248,15 +312,58 @@
             </button>
           </div>
         </div>
+      </div>
+    </section>
 
+    <!-- ================= PAGE 7: ABOUT ================= -->
+    <section id="page-about" class="page-view hidden max-w-3xl mx-auto space-y-6">
+      <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm space-y-6">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">About AlumniHub</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">A dedicated student portal built for connecting generations of school alumni.</p>
+        </div>
+
+        <div class="space-y-4 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+          <p>
+            AlumniHub is an interactive, passout-exclusive platform designed to replace fragmented WhatsApp groups with a structured community space. Whether you are transitioning to university, looking for job referrals, or organizing your 10-year reunion, the hub keeps everyone connected.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
+              <h4 class="font-bold text-blue-600 dark:text-blue-400 mb-1">🎓 Verified Network</h4>
+              <p class="text-xs text-gray-500 dark:text-gray-400">Strictly for verified school passouts, ensuring high-trust discussions and networking.</p>
+            </div>
+            <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
+              <h4 class="font-bold text-emerald-600 dark:text-emerald-400 mb-1">⚡ Open Source & Scalable</h4>
+              <p class="text-xs text-gray-500 dark:text-gray-400">Built using modern web standards and easily deployable directly to GitHub Pages.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center text-xs text-gray-400">
+          <span>Project Version 2.0</span>
+          <span>Designed for School Alumni Associations</span>
+        </div>
       </div>
     </section>
 
   </main>
 
+  <!-- Footer -->
+  <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-6 text-center text-xs text-gray-500 dark:text-gray-400 mt-auto">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <p>&copy; 2026 AlumniHub Platform. All rights reserved.</p>
+      <div class="flex space-x-4">
+        <a href="#home" class="hover:text-blue-600">Home</a>
+        <a href="#feed" class="hover:text-blue-600">Feed</a>
+        <a href="#directory" class="hover:text-blue-600">Directory</a>
+        <a href="#about" class="hover:text-blue-600">About</a>
+      </div>
+    </div>
+  </footer>
+
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <!-- Application Logic -->
+  <!-- Application & Router Logic -->
   <script src="app.js"></script>
 </body>
 </html>
