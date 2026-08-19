@@ -1,33 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AlumniHub - School Passout Network</title>
-
+  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
   <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-
-  <!-- Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Custom Styles -->
   <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body class="bg-gray-100 font-sans text-gray-800 min-h-screen">
 
   <!-- Navigation Bar -->
   <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
-    <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center gap-4">
+      <div class="flex items-center space-x-2 shrink-0">
         <i class="fa-solid fa-graduation-cap text-2xl"></i>
         <h1 class="text-xl font-bold tracking-wide">AlumniHub</h1>
       </div>
 
-      <div class="flex items-center space-x-4">
-        <span class="text-xs sm:text-sm bg-blue-700 px-3 py-1 rounded-full font-medium">Batch of '24</span>
+      <!-- Search Bar -->
+      <div class="relative w-full max-w-md hidden sm:block">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-blue-300 text-sm"></i>
+        <input
+          id="searchInput"
+          type="text"
+          oninput="handleSearch(this.value)"
+          placeholder="Search by name, batch, or keywords..."
+          class="w-full bg-blue-700 placeholder-blue-200 text-white text-sm rounded-full pl-9 pr-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-white transition"
+        />
+      </div>
+      
+      <div class="flex items-center space-x-3 shrink-0">
+        <span class="text-xs bg-blue-700 border border-blue-500 px-3 py-1 rounded-full font-medium">Batch of '24</span>
         <div class="w-9 h-9 rounded-full bg-white text-blue-600 flex items-center justify-center font-bold shadow-sm">
           JD
         </div>
@@ -38,26 +46,44 @@
   <!-- Main Container -->
   <main class="max-w-5xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-4 gap-6">
 
-    <!-- Left Sidebar: Filters & Quick Links -->
+    <!-- Left Sidebar: Filters -->
     <aside class="md:col-span-1 space-y-4">
       <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
         <h2 class="font-semibold text-gray-700 mb-3 text-xs uppercase tracking-wider">Feed Filter</h2>
         <ul class="space-y-1 text-sm font-medium">
           <li>
-            <button onclick="filterPosts('all')"
-              class="w-full text-left px-3 py-2 rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 flex items-center transition">
+            <button 
+              id="filter-all"
+              onclick="filterPosts('all')" 
+              class="w-full text-left px-3 py-2 rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 flex items-center transition"
+            >
               <i class="fa-solid fa-globe w-5 text-blue-600 mr-2"></i> All Updates
             </button>
           </li>
           <li>
-            <button onclick="filterPosts('achievement')"
-              class="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 flex items-center transition">
+            <button 
+              id="filter-achievement"
+              onclick="filterPosts('achievement')" 
+              class="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 flex items-center transition"
+            >
               <i class="fa-solid fa-trophy w-5 text-yellow-500 mr-2"></i> Achievements
             </button>
           </li>
           <li>
-            <button onclick="filterPosts('reunion')"
-              class="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 flex items-center transition">
+            <button 
+              id="filter-opportunity"
+              onclick="filterPosts('opportunity')" 
+              class="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 flex items-center transition"
+            >
+              <i class="fa-solid fa-briefcase w-5 text-emerald-500 mr-2"></i> Jobs & Careers
+            </button>
+          </li>
+          <li>
+            <button 
+              id="filter-reunion"
+              onclick="filterPosts('reunion')" 
+              class="w-full text-left px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 flex items-center transition"
+            >
               <i class="fa-solid fa-calendar-check w-5 text-amber-500 mr-2"></i> Reunions
             </button>
           </li>
@@ -67,7 +93,7 @@
       <!-- Quick Info / About Widget -->
       <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 text-xs text-gray-500 space-y-2">
         <p class="font-semibold text-gray-700 text-sm">Alumni Network</p>
-        <p>Stay connected with classmates, discover career opportunities, and organize meetups.</p>
+        <p>A closed network to connect past batches, collaborate on projects, and organize alumni meetups.</p>
         <div class="pt-2 border-t border-gray-100 text-gray-400">
           &copy; 2026 AlumniHub Project
         </div>
@@ -78,29 +104,53 @@
     <section class="md:col-span-3 space-y-6">
 
       <!-- Post Creation Box -->
-      <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-        <div class="flex items-center space-x-3 mb-3">
-          <div
-            class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 space-y-3">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
             JD
           </div>
-          <input id="postContent" type="text" placeholder="Share an achievement, memory, or reunion update..."
-            class="w-full bg-gray-50 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none transition" />
+          <input
+            id="postContent"
+            type="text"
+            placeholder="Share an achievement, job opening, or reunion plan..."
+            class="w-full bg-gray-50 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none transition"
+          />
         </div>
 
-        <div class="flex justify-between items-center pt-2 border-t border-gray-100 text-xs">
-          <div class="flex items-center space-x-2">
-            <label for="postCategory" class="text-gray-500 font-medium hidden sm:inline">Category:</label>
-            <select id="postCategory"
-              class="bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-700 font-medium focus:ring-1 focus:ring-blue-500 outline-none cursor-pointer">
+        <!-- Optional Image URL Input -->
+        <div class="flex items-center space-x-2 pl-12">
+          <i class="fa-regular fa-image text-gray-400 text-sm"></i>
+          <input
+            id="postImageUrl"
+            type="url"
+            placeholder="Paste Image URL (Optional)"
+            class="w-full text-xs text-gray-600 bg-transparent border-b border-gray-200 pb-1 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div class="flex flex-wrap gap-2 justify-between items-center pt-2 border-t border-gray-100 text-xs">
+          <div class="flex flex-wrap gap-2 items-center">
+            <select id="postCategory" class="bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1 text-gray-700 font-medium focus:ring-1 focus:ring-blue-500 outline-none">
               <option value="general">💬 General</option>
               <option value="achievement">🏆 Achievement</option>
+              <option value="opportunity">💼 Job / Career</option>
               <option value="reunion">📅 Reunion</option>
+            </select>
+
+            <select id="postBatch" class="bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1 text-gray-700 font-medium focus:ring-1 focus:ring-blue-500 outline-none">
+              <option value="2026">Batch '26</option>
+              <option value="2025">Batch '25</option>
+              <option value="2024" selected>Batch '24</option>
+              <option value="2023">Batch '23</option>
+              <option value="2022">Batch '22</option>
+              <option value="2020">Batch '20</option>
             </select>
           </div>
 
-          <button onclick="addPost()"
-            class="bg-blue-600 text-white font-semibold px-5 py-1.5 rounded-lg hover:bg-blue-700 active:scale-95 transition shadow-sm">
+          <button
+            onclick="addPost()"
+            class="bg-blue-600 text-white font-semibold px-5 py-1.5 rounded-lg hover:bg-blue-700 active:scale-95 transition shadow-sm"
+          >
             Post
           </button>
         </div>
@@ -108,15 +158,13 @@
 
       <!-- Feed Container -->
       <div id="postsFeed" class="space-y-4">
-        <!-- Rendered dynamically by app.js -->
+        <!-- Injected dynamically by app.js -->
       </div>
 
     </section>
 
   </main>
 
-  <!-- Application Logic -->
   <script src="app.js"></script>
 </body>
-
 </html>
